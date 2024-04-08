@@ -129,7 +129,7 @@
             <tbody class="table-border-bottom-0">
             @foreach($videos as $item)
             <tr>
-              <td><img src="{{asset('assets/img/avatars/5.png')}}" alt="Avatar" class="rounded-circle avatar-sm"></td>
+              <td><img src="{{asset('storage/'.$item['image'])}}" alt="Avatar" class="rounded-circle avatar-sm" style="object-fit: cover;"></td>
               <td>{{ $item['description']  }}</td>
               <td>
                 <a href="{{ Route('play-video', $item->command) }}">
@@ -238,6 +238,5 @@
       </div>
     </div>
   @endif
-
 </div>
 @endsection

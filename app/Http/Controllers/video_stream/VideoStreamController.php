@@ -32,8 +32,8 @@ class VideoStreamController extends Controller
     public function store(Request $request, CreateVideoStreamsAction $createAction): \Illuminate\Http\RedirectResponse
     {
       $request->validate([
-        'video' => 'required|file|mimes:3gpp,mp4,mpeg,ogg,quicktime,webm,x-msvideo,x-ms-wmv,flv',
-        'image' => 'nullable|file|mimes:jpg,png,jpeg',
+        'image' => 'nullable|file|mimes:jpg,png,jpeg,webp',
+        'video' => 'required|mimetypes:video/mp4,video/webm,video/ogg',
         'command' => 'required',
         'description' => 'required'
       ]);
@@ -44,7 +44,7 @@ class VideoStreamController extends Controller
         ->with( 'style', 'success' );
     }
 
-    /**
+    /*
      * Display the specified resource.
      */
     public function show(video_stream $video_stream)
