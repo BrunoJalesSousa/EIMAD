@@ -59,14 +59,14 @@
                     <div class="row">
                       <div class="mb-4">
                         <label for="image" class="form-label">Imagem</label>
-                        <input class="form-control" type="file" id="image" name="image" placeholder="Imagem">
+                        <input class="form-control" type="file" id="image" name="image" placeholder="Imagem"">
                         @error('image')
                           <div class="alert alert-danger mt-2 mb-0">O valor para a imagem é inválido!</div>
                         @enderror
                       </div>
                       <div class="mb-4">
                         <label for="description" class="form-label">Descrição</label>
-                        <input type="text" id="description" name="description" class="form-control" placeholder="Descrição">
+                        <input type="text" id="description" name="description" class="form-control" placeholder="Descrição" value="{{old('description')}}">
                         @error('description')
                           <div class="alert alert-danger mt-2 mb-0">O valor para a descrição é inválido!</div>
                         @enderror
@@ -80,7 +80,7 @@
                       </div>
                       <div class="mb-4">
                         <label for="command" class="form-label">Comando</label>
-                        <input type="text" id="command" name="command" class="form-control" placeholder="Comando">
+                        <input type="text" id="command" name="command" class="form-control" placeholder="Comando" value="{{old('command')}}">
                         @error('command')
                           <div class="alert alert-danger mt-2 mb-0">O valor para o comando é inválido!</div>
                         @enderror

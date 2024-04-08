@@ -8,6 +8,8 @@ use App\Models\video_stream;
 use Illuminate\Http\Request;
 use App\Http\Actions\Video_stream_actions\GetAllVideoStreamsAction;
 use App\Http\Actions\Video_stream_actions\CreateVideoStreamsAction;
+use Illuminate\Support\Facades\Validator;
+
 class VideoStreamController extends Controller
 {
     /**
@@ -31,12 +33,23 @@ class VideoStreamController extends Controller
      */
     public function store(Request $request, CreateVideoStreamsAction $createAction): \Illuminate\Http\RedirectResponse
     {
-      $request->validate([
+      $validator = Validator::make($request->all(), [
         'image' => 'nullable|file|mimes:jpg,png,jpeg,webp',
         'video' => 'required|mimetypes:video/mp4,video/webm,video/ogg',
         'command' => 'required',
         'description' => 'required'
       ]);
+
+      if ($validator->fails()) {
+        return redirect()
+          ->back()
+          ->withErrors($validator->errors())
+          ->withInput($request->all())
+          ->with('message', 'Video não inserido, existem valores inválidos nos campos.')
+          ->with('title', 'Campos inválidos!')
+          ->with('style', 'warning');
+      }
+
       $createAction->handle($request);
       return back()
         ->with( 'message', 'Video adicionado com successo!')
