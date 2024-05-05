@@ -12,6 +12,6 @@ class GetAllVideoStreamsAction
 
   public function handle($data)
   {
-    return video_stream::all();
+    return video_stream::orderBy('order')->get();
   }
 }

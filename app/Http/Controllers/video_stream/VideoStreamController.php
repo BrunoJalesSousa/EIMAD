@@ -34,10 +34,7 @@ class VideoStreamController extends Controller
     public function store(Request $request, CreateVideoStreamsAction $createAction): \Illuminate\Http\RedirectResponse
     {
       $validator = Validator::make($request->all(), [
-        'image' => 'nullable|file|mimes:jpg,png,jpeg,webp',
         'video' => 'required|mimetypes:video/mp4,video/webm,video/ogg',
-        'command' => 'required',
-        'description' => 'required'
       ]);
 
       if ($validator->fails()) {
@@ -80,27 +77,11 @@ class VideoStreamController extends Controller
     {
         $validator = validator()->make($request->all(), [
           'video' => 'nullable|file|file|mimes:3gpp,mp4,mpeg,ogg,quicktime,webm,x-msvideo,x-ms-wmv,flv',
-          'image' => 'nullable|file|mimes:jpg,png,jpeg',
-          'command' => 'required',
-          'description' => 'required'
         ]);
         if ($validator->fails()){
           if ($validator->errors()->first('video')) {
             $validator->errors()->add('videoUpdate', 'video');
             $validator->errors()->forget('video');
-          }
-          if ($validator->errors()->first('image')) {
-            $validator->errors()->add('imageUpdate', 'image');
-            $validator->errors()->forget('image');
-
-          }
-          if ($validator->errors()->first('command')) {
-            $validator->errors()->add('commandUpdate', 'command');
-            $validator->errors()->forget('command');
-          }
-          if ($validator->errors()->first('description')) {
-            $validator->errors()->add('descriptionUpdate', 'description');
-            $validator->errors()->forget('description');
           }
           return redirect()->back()->withErrors($validator)
             ->with('message', 'Não foi possivel atualizar o video...')

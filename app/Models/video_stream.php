@@ -16,10 +16,9 @@ class video_stream extends Model
      */
     protected $fillable = [
       'slug',
-      'image',
       'video',
+      'order',
       'description',
-      'command'
     ];
 
     /**

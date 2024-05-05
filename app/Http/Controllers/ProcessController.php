@@ -14,4 +14,12 @@ class ProcessController extends Controller
       ->with('message', 'Video está a reproduzir!')
       ->with('style', 'success');
   }
+
+  public function loopVideo(string $command) {
+    Process::run('echo ' . $command . ' > new.txt');
+    return back()
+      ->with('title', 'sucesso')
+      ->with('message', 'Video está a reproduzir!')
+      ->with('style', 'success');
+  }
 }

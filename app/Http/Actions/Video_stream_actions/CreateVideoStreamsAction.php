@@ -15,17 +15,15 @@ class CreateVideoStreamsAction
   public function handle(Request $request)
   {
     $video = $request->file('video');
-    $img = $request->file('image');
-    $slug = str_replace(' ', '', $request->description) . Carbon::now()->format('m-d-Y');
+    $description = str_replace(' ', '', $request->video->getClientOriginalName());
+    $slug = str_replace(' ', '', $description) . Carbon::now()->format('m-d-Y');
     $videoPath = $video->storeAs('/uploads/videos', $slug . '.' . $video->getClientOriginalExtension());
-    $imagePath = $img->storeAs('/uploads/images', $slug . '.' . $img->getClientOriginalExtension());
-
+    $numberVideos = video_stream::all()->count();
     $video_stream = video_stream::create([
       'slug' => $slug,
-      'image' => $imagePath,
       'video' => $videoPath,
-      'description' => $request->description,
-      'command' => $request->command,
+      'description' => $description,
+      'order' => $numberVideos + 1,
     ]);
     return $video_stream->save();
   }

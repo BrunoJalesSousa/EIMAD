@@ -2,6 +2,12 @@
   "menu": [
     {
       "url": "/",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons bx bxs-dashboard",
+      "slug": "dashboard"
+    },
+    {
+      "url": "/media/videos",
       "name": "Media",
       "icon": "menu-icon tf-icons bx bx-video",
       "slug": "media",

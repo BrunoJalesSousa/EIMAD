@@ -22,21 +22,11 @@
             </a>
           </div>
           <!-- /Logo -->
-          <h4 class="mb-2">Welcome to {{config('variables.templateName')}}! 👋</h4>
-          <p class="mb-4">Please sign-in to your account and start the adventure</p>
-          @if(Auth::check())
-            <p>Sim!</p>
-          @else
-            <p>Não...</p>
-          @endif
+          <h4 class="mb-2">Bem-vindo ao {{config('variables.projectName')}}! 👋</h4>
+          <p class="mb-4">Insira as suas credenciais para entrar</p>
+
           @include('eimad.auth.login-form')
 
-          <p class="text-center">
-            <span>New on our platform?</span>
-            <a href="{{url('auth/register-basic')}}">
-              <span>Create an account</span>
-            </a>
-          </p>
         </div>
       </div>
     </div>

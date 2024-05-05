@@ -34,7 +34,7 @@ class AuthController extends Controller
     Auth::login($user);
 
     // Redirect the user after registration
-    return redirect('/1');
+    return redirect('/video');
   }
   public function registerAccount(Request $request)
   {
@@ -98,7 +98,7 @@ class AuthController extends Controller
 
     if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
       Auth::loginUsingId($user->id);
-      return redirect()->intended('/1');
+      return redirect()->intended('/accounts');
     }
 
     return redirect()->back()->withErrors(['email' => 'Invalid email or password.']);

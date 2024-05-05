@@ -20,7 +20,6 @@ class DelAllVideosStreamsAction
     foreach($rows as $row) {
       Storage::delete([
         $row->video,
-        $row->image,
       ]);
       $row->delete();
     }

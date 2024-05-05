@@ -49,13 +49,33 @@
               <td>{{ $item['name']  }}</td>
               <td>{{ $item['email']  }}</td>
               <td>
+                @if($item->email == Auth::user()->email)
                 <button type="button" id="edit-btn{{$item->email}}" class="btn btn-icon btn-outline-primary">
                   <span class="tf-icons bx bx-edit"></span>
                 </button>
-                @if($item->email != Auth::user()->email)
-                  <button type="button" class="btn btn-icon btn-outline-danger">
+                @else
+                  <button type="button" class="btn btn-icon btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delAccount{{ $item->email }}">
                     <span class="tf-icons bx bx-trash"></span>
                   </button>
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="delAccount{{$item['email']}}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="modalCenterTitle">Apagar TODOS os videos</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Voltar"></button>
+                        </div>
+                        <form action="{{ route('del-account', $item->email) }}" method="post">
+                          @csrf
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Voltar</button>
+                            <button type="submit" class="btn btn-danger">Apagar</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
                 @endif
               </td>
             </tr>
