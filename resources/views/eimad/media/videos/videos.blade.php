@@ -38,48 +38,56 @@
       </div>
       <hr class="mt-0">
       <div class="card-body">
-        <div class="d-flex flex-row-reverse gap-2">
-          <button id="add-btn" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#loopAllMedia">
-            Repetir todos
-          </button>
-          <button id="add-btn" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#pauseMedia">
-            Pausar
-          </button>
-          <button id="add-btn" type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#resumeMedia">
-            Continuar
-          </button>
-          <button id="add-btn" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMedia">
-            Adicionar
-          </button>
-          <button id="del-all-btn" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delAllMedia">
-            Apagar Todos
-          </button>
-          <!-- Modal -->
-          <div class="modal fade" id="addMedia" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="modalCenterTitle">Novo video</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Voltar"></button>
-                </div>
-                <form action="{{route('video_stream.store')}}" method="post" enctype="multipart/form-data">
-                  @csrf
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="mb-4">
-                        <label for="video" class="form-label">Video</label>
-                        <input type="file" id="video" name="video" class="form-control" placeholder="Video">
-                        @error('video')
-                          <div class="alert alert-danger mt-2 mb-0">O valor para o vídeo é inválido!</div>
-                        @enderror
-                      </div>
+        <div class="row">
+          <div class="col-6">
+            <div class="flex flex-row-reverse flex-wrap">
+              <button id="loop-all-btn" type="button" class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#loopAllMedia">
+                Repetir todos
+              </button>
+              <button id="resume-btn" type="button" class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#resumeMedia">
+                Continuar
+              </button>
+              <button id="pause-btn" type="button" class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#pauseMedia">
+                Pausar
+              </button>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="d-flex justify-content-end flex-wrap">
+              <button id="add-btn" type="button" class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#addMedia">
+                Adicionar
+              </button>
+              <button id="del-all-btn" type="button" class="btn btn-danger m-1" data-bs-toggle="modal" data-bs-target="#delAllMedia">
+                Apagar Todos
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="addMedia" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalCenterTitle">Novo video</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Voltar"></button>
                     </div>
+                    <form action="{{route('video_stream.store')}}" method="post" enctype="multipart/form-data">
+                      @csrf
+                      <div class="modal-body">
+                        <div class="row">
+                          <div class="mb-4">
+                            <label for="video" class="form-label">Video</label>
+                            <input type="file" id="video" name="video" class="form-control" placeholder="Video">
+                            @error('video')
+                            <div class="alert alert-danger mt-2 mb-0">O valor para o vídeo é inválido!</div>
+                            @enderror
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Voltar</button>
+                        <button type="submit" class="btn btn-primary">Adicionar</button>
+                      </div>
+                    </form>
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Voltar</button>
-                    <button type="submit" class="btn btn-primary">Adicionar</button>
-                  </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
@@ -109,6 +117,7 @@
             <thead>
             <tr>
               <th>Posição</th>
+              <th></th>
               <th>DESCRIÇÃO</th>
               <th>AÇÕES</th>
             </tr>
@@ -117,18 +126,25 @@
             @foreach($videos as $item)
             <tr>
               <td>
+                <div class="align-content-center" style="line-height: 2.5rem;">
+                  {{ $item['order'] }}
+                </div>
+              </td>
+              <td>
                 <div class="row">
-                  <div class="col-2">
-                    {{ $item['order'] }}
-                  </div>
-                  <div class="col-10">
-                    <div class="flex-column">
-                      <button type="button" id="play-btn{{$item->slug}}" class="btn btn-xs btn-icon btn-outline-primary">
-                        <span class="tf-icons bx bx-up-arrow"></span>
-                      </button>
-                      <button type="button" id="play-btn{{$item->slug}}" class="btn btn-xs btn-icon btn-outline-primary">
-                        <span class="tf-icons bx bx-down-arrow"></span>
-                      </button>
+                  <div class="col-12">
+                    <div class="inline-block">
+                      <a href="{{ Route('media-order-up', $item->slug) }}">
+                        <button type="button" id="order-up-btn{{$item->slug}}" class="btn btn-xs btn-icon btn-outline-primary">
+                          <span class="tf-icons bx bx-up-arrow"></span>
+                        </button>
+                      </a>
+                      <br>
+                      <a href="{{ Route('media-order-down', $item->slug) }}">
+                        <button type="button" id="order-down-btn{{$item->slug}}" class="btn btn-xs btn-icon btn-outline-primary">
+                          <span class="tf-icons bx bx-down-arrow"></span>
+                        </button>
+                      </a>
                     </div>
 
                   </div>

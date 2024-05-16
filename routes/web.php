@@ -41,7 +41,8 @@ Route::get('/media/videos', [MediaController::class, 'videos'])->name('media-vid
 Route::post('/media/del-video/{slug}', [MediaController::class, 'delvideo'])->name('media-delvideo')->middleware('auth');
 Route::post('/media/del-all-videos', [MediaController::class, 'delAllVideos'])->name('media-delAllVideos')->middleware('auth');
 Route::Resource('/video_stream', VideoStreamController::class)->middleware('auth');
-
+Route::get('/media/order/{slug}/up', [VideoStreamController::class, 'orderUp'])->name('media-order-up')->middleware('auth');
+Route::get('/media/order/{slug}/down', [VideoStreamController::class, 'orderDown'])->name('media-order-down')->middleware('auth');
 
 // CLI Routes
 Route::get('media/play/{slug}', [ProcessController::class, 'playVideo'])->name('play-video')->middleware('auth');
