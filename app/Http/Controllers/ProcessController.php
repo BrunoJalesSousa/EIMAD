@@ -10,7 +10,7 @@ class ProcessController extends Controller
 {
   public function playVideo(string $slug) {
     $video = video_stream::where('slug', $slug)->firstOrFail();
-    Process::run('vlc ' . $video->video);
+    Process::run('vlc storage/app/public/' . $video->video);
     return back()
       ->with('title', 'sucesso')
       ->with('message', 'Video está a reproduzir! VLC')
