@@ -43,11 +43,15 @@ Route::post('/media/del-all-videos', [MediaController::class, 'delAllVideos'])->
 Route::Resource('/video_stream', VideoStreamController::class)->middleware('auth');
 Route::get('/media/order/{slug}/up', [VideoStreamController::class, 'orderUp'])->name('media-order-up')->middleware('auth');
 Route::get('/media/order/{slug}/down', [VideoStreamController::class, 'orderDown'])->name('media-order-down')->middleware('auth');
+Route::get('/media/sync', [VideoStreamController::class, 'syncWithFolder'])->name('media-sync')->middleware('auth');
 
 // CLI Routes
 Route::get('media/play/{slug}', [ProcessController::class, 'playVideo'])->name('play-video')->middleware('auth');
 Route::get('media/loop/{slug}', [ProcessController::class, 'loopVideo'])->name('loop-video')->middleware('auth');
-
+Route::get('media/fullscreen', [ProcessController::class, 'fullscreen'])->name('fullscreen-video')->middleware('auth');
+Route::get('media/pause', [ProcessController::class, 'pauseVideo'])->name('pause-video')->middleware('auth');
+Route::get('media/stop', [ProcessController::class, 'stopVideo'])->name('stop-video')->middleware('auth');
+Route::get('media/loop-all', [ProcessController::class, 'loopAllVideo'])->name('loop-all-video')->middleware('auth');
 
 // layout
   Route::get('/layouts/without-menu', [WithoutMenu::class, 'index'])->name('layouts-without-menu');

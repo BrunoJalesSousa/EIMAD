@@ -10,6 +10,7 @@ use App\Models\video_stream;
 use Illuminate\Http\Request;
 use App\Http\Actions\Video_stream_actions\GetAllVideoStreamsAction;
 use App\Http\Actions\Video_stream_actions\CreateVideoStreamsAction;
+use App\Http\Actions\Video_stream_actions\SyncWithFolderVideoStreamsAction;
 use Illuminate\Support\Facades\Validator;
 
 class VideoStreamController extends Controller
@@ -109,6 +110,15 @@ class VideoStreamController extends Controller
   {
     $action->handle($request, $slug);
     return back();
+  }
+
+  public function syncWithFolder(SyncWithFolderVideoStreamsAction $action)
+  {
+    $action->handle();
+    return back()->with( 'message', 'Video atualizado com sucesso!')
+      ->with('title', 'Sucesso!')
+      ->with('style', 'success');
+
   }
 
     /**

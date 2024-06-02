@@ -40,16 +40,17 @@
       <div class="card-body">
         <div class="row">
           <div class="col-6">
-            <div class="flex flex-row-reverse flex-wrap">
-              <button id="loop-all-btn" type="button" class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#loopAllMedia">
-                Repetir todos
+            <div class="dropdown">
+              <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Ações
               </button>
-              <button id="resume-btn" type="button" class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#resumeMedia">
-                Continuar
-              </button>
-              <button id="pause-btn" type="button" class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#pauseMedia">
-                Pausar
-              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{route('loop-all-video')}}">Repetir todos</a></li>
+                <li><a class="dropdown-item" href="{{route('pause-video')}}">Pausar/Continuar</a></li>
+                <li><a class="dropdown-item" href="{{route('stop-video')}}">Parar</a></li>
+                <li><a class="dropdown-item" href="{{route('fullscreen-video')}}">Fullscreen</a></li>
+                <li><a class="dropdown-item" href="{{route('media-sync')}}">Sincronizar com pasta</a></li>
+              </ul>
             </div>
           </div>
           <div class="col-6">
