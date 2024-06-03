@@ -58,12 +58,12 @@ class PlayVideoJob implements ShouldQueue
   public function handlePlay(): void
   {
     $response = $this->checkStatusVLC('status');
-    $this->sendCommandToVLC('add "'. storage_path('app\public' . $this->command) . '"');
+    $this->sendCommandToVLC('add "'. str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"');
   }
 
   public function handleLoop(): void
   {
-    $this->sendCommandToVLC('add "'. storage_path('app\public' . $this->command) . '"');
+    $this->sendCommandToVLC('add "'. str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"');
     $this->sendCommandToVLC('repeat');
   }
 
