@@ -28,6 +28,11 @@ class PlayVideoJob implements ShouldQueue
     $this->handlePlay();
   }
 
+  public function handleQueueVideo()
+  {
+    $this->sendCommandToVLC('enqueue "'. str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"');
+  }
+
   public function setCommand($command)
   {
     $this->command = $command;
@@ -43,6 +48,13 @@ class PlayVideoJob implements ShouldQueue
     $this->sendCommandToVLC('fullscreen');
   }
 
+
+
+  public function handleClearQueue(): void
+  {
+    $this->sendCommandToVLC('clear');
+  }
+
   public function handlePause(): void
   {
     $this->sendCommandToVLC('pause');
@@ -55,27 +67,32 @@ class PlayVideoJob implements ShouldQueue
 
   public function handlePlay(): void
   {
-    $response = $this->checkStatusVLC('status');
+    $response = $this->isVlcRunning();
     if (!$response) {
       $this->openVLC();
     }
     $this->sendCommandToVLC('add "'. str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"');
   }
 
+  public function handleGetStatus()
+  {
+    return $this->checkStatusVLC();
+  }
+
   public function handleLoop(): void
   {
-    $this->sendCommandToVLC('add "'. str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"');
+    //$this->sendCommandToVLC('add "'. str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"');
     $this->sendCommandToVLC('repeat');
+    //$this->sendCommandToVLC('stop');
   }
 
   public function handleLoopAll(): void
   {
     //$this->sendCommandToVLC('clear');
     $videos = video_stream::all()->sortBy('order');
-
-    // Generate the playlist content
-    $playlistContent = "#EXTM3U\n"; // M3U file header
     /*
+    $playlistContent = "#EXTM3U\n"; // M3U file header
+
     foreach ($videos as $video) {
       $filePath = 'C:\\Users\\senro\\PhpstormProjects\\EIMAD\\storage\\app\\public\\uploads\\videos\\' . $video->filename;
       $playlistContent .= "#EXTINF:-1,$video->description\n"; // Add file information
@@ -85,10 +102,11 @@ class PlayVideoJob implements ShouldQueue
     file_put_contents($playlistPath, $playlistContent);
     */
     foreach ($videos as $video) {
-      $this->sendCommandToVLC('enqueue "' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
+      if ($video->order == 1)
+        $this->sendCommandToVLC('add "' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
+      else
+        $this->sendCommandToVLC('enqueue "' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
     }
-
-    //$this->sendCommandToVLC('loop on');
   }
 
   protected function sendCommandToVLC(string $command)
@@ -131,20 +149,109 @@ class PlayVideoJob implements ShouldQueue
     return true;
   }
 
-  private function checkStatusVLC($command)
+  public function handleCurrentQueue()
+  {
+    $playlist = $this->askVlcForQueue();
+    return $this->parseQueue($playlist);
+  }
+
+  private function askVlcForQueue()
+  {
+    $address = '127.0.0.1';
+    $port = 12345;
+
+    // Open the socket connection
+    $fp = fsockopen($address, $port, $errno, $errstr, 5);
+    if (!$fp) {
+      return "$errstr ($errno)<br />\n";
+    }
+
+    // Send the command
+    fwrite($fp, 'playlist' . "\n");
+
+    // Set the stream to non-blocking mode
+    stream_set_blocking($fp, false);
+
+    $response = '';
+    $startTime = time();
+    while (true) {
+      $line = fgets($fp);
+
+      if ($line !== false) {
+        $response .= $line;
+      } else {
+        // Check if the timeout has been reached
+        if ((time() - $startTime) > 5) {
+          break;
+        }
+      }
+    }
+
+    fclose($fp);
+    return $response;
+  }
+
+  private function parseQueue($playlist)
+  {
+    $lines = explode("\n", $playlist);
+    $queue = [];
+    $isInQueueSection = false;
+
+    foreach ($lines as $line) {
+      $line = trim($line);
+
+      // Detect the start of the queue section
+      if (str_contains($line, "|") && str_contains($line, "playlist")) {
+        $isInQueueSection = true;
+        continue;
+      }
+
+      // If we are in the queue section, extract the item information
+      if ($isInQueueSection) {
+        if (empty($line)) {
+          break; // End of queue section
+        }
+        if (strpos($line, "|") !== false) {
+          // Extract relevant parts of the line
+          preg_match('/\| (.*?) \| (.*?) \|/', $line, $matches);
+          if (count($matches) == 3) {
+            $queue[] = [
+              'id' => trim($matches[1]),
+              'title' => trim($matches[2]),
+            ];
+          }
+        }
+      }
+    }
+
+    return $queue;
+  }
+
+  private function checkStatusVLC()
   {
     // Change the IP and port if VLC is running on a different machine or port
-    $fp = fsockopen("127.0.0.1", 12345, $errno, $errstr, 30);
+    $fp = fsockopen("127.0.0.1", 12345, $errno, $errstr, 5);
 
     if (!$fp) {
       return "$errstr ($errno)<br />\n";
     } else {
-      fwrite($fp, $command . "\n");
+      // Set stream timeout (5 seconds)
+      stream_set_timeout($fp, 5);
 
+      // Send the command
+      fwrite($fp, 'status' . "\n");
+
+      // Set the stream to non-blocking mode
+      stream_set_blocking($fp, false);
       // Read the response
       $response = '';
-      $line = fgets($fp);
-      $response .= $line;
+      while (!feof($fp)) {
+        $line = fgets($fp);
+        if ($line === false) {
+          break;
+        }
+        $response .= $line;
+      }
 
       fclose($fp);
 

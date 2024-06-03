@@ -10,13 +10,34 @@ use Illuminate\Support\Facades\Process;
 
 class ProcessController extends Controller
 {
-  public function playVideo(string $slug, PlayVideoJob $job) {
+  public function queueVideo(string $slug, PlayVideoJob $job)
+  {
+    $video = video_stream::where('slug', $slug)->firstOrFail();
+    $job->setCommand($video->video);
+    $job->handleQueueVideo();
+    return back()
+      ->with('title', 'Sucesso!')
+      ->with('message', 'O video ' . $video->description . ' foi adicionado à fila!')
+      ->with('style', 'success');
+  }
+
+  public function playVideo(string $slug, PlayVideoJob $job)
+  {
     $video = video_stream::where('slug', $slug)->firstOrFail();
     $job->setCommand($video->video);
     $job->handlePlay();
     return back()
       ->with('title', 'Sucesso!')
-      ->with('message', 'O video ' . $video->video . ' está a reproduzir!')
+      ->with('message', 'O video ' . $video->description . ' está a reproduzir!')
+      ->with('style', 'success');
+  }
+
+  public function clearQueue(PlayVideoJob $job)
+  {
+    $job->handleClearQueue();
+    return back()
+      ->with('title', 'Sucesso!')
+      ->with('message', 'A fila foi limpa')
       ->with('style', 'success');
   }
 

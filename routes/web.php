@@ -47,11 +47,13 @@ Route::get('/media/sync', [VideoStreamController::class, 'syncWithFolder'])->nam
 
 // CLI Routes
 Route::get('media/play/{slug}', [ProcessController::class, 'playVideo'])->name('play-video')->middleware('auth');
-Route::get('media/loop/{slug}', [ProcessController::class, 'loopVideo'])->name('loop-video')->middleware('auth');
 Route::get('media/fullscreen', [ProcessController::class, 'fullscreen'])->name('fullscreen-video')->middleware('auth');
 Route::get('media/pause', [ProcessController::class, 'pauseVideo'])->name('pause-video')->middleware('auth');
 Route::get('media/stop', [ProcessController::class, 'stopVideo'])->name('stop-video')->middleware('auth');
-Route::get('media/loop-all', [ProcessController::class, 'loopAllVideo'])->name('loop-all-video')->middleware('auth');
+Route::get('media/loop', [ProcessController::class, 'loopAllVideo'])->name('loop-video')->middleware('auth');
+Route::get('media/clear-queue', [ProcessController::class, 'clearQueue'])->name('clear-queue')->middleware('auth');
+Route::get('media/queue-video/{slug}', [ProcessController::class, 'queueVideo'])->name('queue-video')->middleware('auth');
+
 
 // layout
   Route::get('/layouts/without-menu', [WithoutMenu::class, 'index'])->name('layouts-without-menu');
