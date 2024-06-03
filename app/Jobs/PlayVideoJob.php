@@ -15,8 +15,6 @@ class PlayVideoJob implements ShouldQueue
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
   protected $command;
-  protected $isVlcOpen = false;
-
   /**
    * Create a new job instance.
    */
@@ -58,6 +56,9 @@ class PlayVideoJob implements ShouldQueue
   public function handlePlay(): void
   {
     $response = $this->checkStatusVLC('status');
+    if (!$response) {
+      $this->openVLC();
+    }
     $this->sendCommandToVLC('add "'. str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"');
   }
 
@@ -84,7 +85,7 @@ class PlayVideoJob implements ShouldQueue
     file_put_contents($playlistPath, $playlistContent);
     */
     foreach ($videos as $video) {
-      $this->sendCommandToVLC('enqueue ' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
+      $this->sendCommandToVLC('enqueue "' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
     }
 
     //$this->sendCommandToVLC('loop on');
@@ -107,12 +108,8 @@ class PlayVideoJob implements ShouldQueue
 
   protected function openVLC()
   {
-    // Construct the full VLC command to open the video
-    $vlcCommand = '"C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe" --intf rc --rc-host 127.0.0.1:12345';
-
     // Run the VLC command as a new process
-    Process::fromShellCommandline($vlcCommand)->run();
-    $this->isVlcOpen = true;
+    OpenVlcJob::dispatch();
   }
 
   protected function isVlcRunning(): bool
