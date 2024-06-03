@@ -74,6 +74,7 @@ class PlayVideoJob implements ShouldQueue
 
     // Generate the playlist content
     $playlistContent = "#EXTM3U\n"; // M3U file header
+    /*
     foreach ($videos as $video) {
       $filePath = 'C:\\Users\\senro\\PhpstormProjects\\EIMAD\\storage\\app\\public\\uploads\\videos\\' . $video->filename;
       $playlistContent .= "#EXTINF:-1,$video->description\n"; // Add file information
@@ -81,7 +82,10 @@ class PlayVideoJob implements ShouldQueue
     }
     $playlistPath = 'C:\\Users\\senro\\PhpstormProjects\\EIMAD\\storage\\app\\allMedia.m3u';
     file_put_contents($playlistPath, $playlistContent);
-    $this->sendCommandToVLC('enqueue ' . $playlistPath);
+    */
+    foreach ($videos as $video) {
+      $this->sendCommandToVLC('enqueue ' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
+    }
 
     //$this->sendCommandToVLC('loop on');
   }
