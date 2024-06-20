@@ -37,7 +37,8 @@ Route::get('/accounts/del/{slug}', [AccountViewsController::class, 'destroy'])->
 Route::get('/accounts/add', [AccountViewsController::class, 'add'])->name('add-account')->middleware('auth');
 
 // Media routes
-Route::get('/media/videos', [MediaController::class, 'videos'])->name('media-videos')->middleware('auth');
+Route::get('/media/vlc', [MediaController::class, 'videos_vlc'])->name('media-vlc')->middleware('auth');
+Route::get('/media/omxplayer', [MediaController::class, 'videos_omxplayer'])->name('media-omxplayer')->middleware('auth');
 Route::post('/media/del-video/{slug}', [MediaController::class, 'delvideo'])->name('media-delvideo')->middleware('auth');
 Route::post('/media/del-all-videos', [MediaController::class, 'delAllVideos'])->name('media-delAllVideos')->middleware('auth');
 Route::Resource('/video_stream', VideoStreamController::class)->middleware('auth');
@@ -45,14 +46,19 @@ Route::get('/media/order/{slug}/up', [VideoStreamController::class, 'orderUp'])-
 Route::get('/media/order/{slug}/down', [VideoStreamController::class, 'orderDown'])->name('media-order-down')->middleware('auth');
 Route::get('/media/sync', [VideoStreamController::class, 'syncWithFolder'])->name('media-sync')->middleware('auth');
 
-// CLI Routes
-Route::get('media/play/{slug}', [ProcessController::class, 'playVideo'])->name('play-video')->middleware('auth');
-Route::get('media/fullscreen', [ProcessController::class, 'fullscreen'])->name('fullscreen-video')->middleware('auth');
-Route::get('media/pause', [ProcessController::class, 'pauseVideo'])->name('pause-video')->middleware('auth');
-Route::get('media/stop', [ProcessController::class, 'stopVideo'])->name('stop-video')->middleware('auth');
-Route::get('media/loop', [ProcessController::class, 'loopAllVideo'])->name('loop-video')->middleware('auth');
-Route::get('media/clear-queue', [ProcessController::class, 'clearQueue'])->name('clear-queue')->middleware('auth');
-Route::get('media/queue-video/{slug}', [ProcessController::class, 'queueVideo'])->name('queue-video')->middleware('auth');
+// OMXPLAYER Routes
+Route::get('media/omxplayer/play/{slug}', [ProcessController::class, 'playVideoOmxplayer'])->name('play-video-omxplayer')->middleware('auth');
+Route::get('media/omxplayer/stop', [ProcessController::class, 'stopVideoOmxplayer'])->name('stop-video-omxplayer')->middleware('auth');
+Route::get('media/omxplayer/loop', [ProcessController::class, 'loopAllVideoOmxplayer'])->name('loop-video-omxplayer')->middleware('auth');
+
+// VLC Routes
+Route::get('media/vlc/play/{slug}', [ProcessController::class, 'playVideoVlc'])->name('play-video-vlc')->middleware('auth');
+Route::get('media/vlc/fullscreen', [ProcessController::class, 'fullscreenVlc'])->name('fullscreen-video-vlc')->middleware('auth');
+Route::get('media/vlc/pause', [ProcessController::class, 'pauseVideoVlc'])->name('pause-video-vlc')->middleware('auth');
+Route::get('media/vlc/stop', [ProcessController::class, 'stopVideoVlc'])->name('stop-video-vlc')->middleware('auth');
+Route::get('media/vlc/loop', [ProcessController::class, 'loopAllVideoVlc'])->name('loop-video-vlc')->middleware('auth');
+Route::get('media/vlc/clear-queue', [ProcessController::class, 'clearQueueVlc'])->name('clear-queue-vlc')->middleware('auth');
+Route::get('media/vlc/queue-video/{slug}', [ProcessController::class, 'queueVideoVlc'])->name('queue-video-vlc')->middleware('auth');
 
 
 // layout

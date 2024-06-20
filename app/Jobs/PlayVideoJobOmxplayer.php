@@ -10,7 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Symfony\Component\Process\Process;
 
-class PlayVideoJob implements ShouldQueue
+class PlayVideoJobOmxplayer implements ShouldQueue
 {
   use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -38,83 +38,20 @@ class PlayVideoJob implements ShouldQueue
     $this->command = $command;
   }
 
-  /**
-   * Execute the job.
-   */
-  public function handleFullscreen(): void
-  {
-    $openCommand = 'enqueue --one ""';
-    $this->sendCommandToVLC($openCommand);
-    $this->sendCommandToVLC('fullscreen');
-  }
-
-
-
-  public function handleClearQueue(): void
-  {
-    $this->sendCommandToVLC('clear');
-  }
-
-  public function handlePause(): void
-  {
-    $this->sendCommandToVLC('pause');
-  }
-
   public function handleStop(): void
   {
-    $this->sendCommandToVLC('stop');
+    exec('killall "omxplayer.bin"');
   }
 
   public function handlePlay(): void
   {
-    $response = $this->isVlcRunning();
-    if (!$response) {
-      $this->openVLC();
-    }
-    //$command = 'add "' . str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"';
-    //dd($command);
-    //$this->sendCommandToVLC($command);
-    dd('omxplayer -p -o hdmi ' . str_replace('\\', '/', storage_path('app/public' . $this->command)));
-    
     $command = 'sudo omxplayer -p -o hdmi ' . str_replace('\\', '/', storage_path('app/public' . $this->command));
     exec($command, $output, $returnVar);
-    dd($output);
-  }
-
-  public function handleGetStatus()
-  {
-    return true;
-    return $this->checkStatusVLC();
   }
 
   public function handleLoop(): void
   {
-    //$this->sendCommandToVLC('add "'. str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"');
-    $this->sendCommandToVLC('repeat');
-    //$this->sendCommandToVLC('stop');
-  }
-
-  public function handleLoopAll(): void
-  {
-    //$this->sendCommandToVLC('clear');
-    $videos = video_stream::all()->sortBy('order');
-    /*
-    $playlistContent = "#EXTM3U\n"; // M3U file header
-
-    foreach ($videos as $video) {
-      $filePath = 'C:\\Users\\senro\\PhpstormProjects\\EIMAD\\storage\\app\\public\\uploads\\videos\\' . $video->filename;
-      $playlistContent .= "#EXTINF:-1,$video->description\n"; // Add file information
-      $playlistContent .= $filePath . "\n"; // Add file path
-    }
-    $playlistPath = 'C:\\Users\\senro\\PhpstormProjects\\EIMAD\\storage\\app\\allMedia.m3u';
-    file_put_contents($playlistPath, $playlistContent);
-    */
-    foreach ($videos as $video) {
-      if ($video->order == 1)
-        $this->sendCommandToVLC('add "' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
-      else
-        $this->sendCommandToVLC('enqueue "' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
-    }
+    exec('sudo omxplayer --loop -p -o hdmi ' . str_replace('\\', '/', storage_path('app/public' . $this->command)));
   }
 
   protected function sendCommandToVLC(string $command)

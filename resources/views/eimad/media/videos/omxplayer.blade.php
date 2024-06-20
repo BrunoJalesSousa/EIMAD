@@ -33,7 +33,7 @@
   <div class="col-lg-12 mb-12 order-0">
     <div class="card">
       <div class="flex-row d-flex">
-        <div class="card-title h4 mt-3 mx-3 me-0 mb-o">Videos</div>
+        <div class="card-title h4 mt-3 mx-3 me-0 mb-o">OMXPlayer</div>
         <div class="bx bx-video h4 mt-3 mx-3 me-0 mb-0"></div>
       </div>
       <hr class="mt-0">
@@ -45,66 +45,13 @@
                 Ações
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{route('loop-video')}}">Passar todos</a></li>
-                <li><a class="dropdown-item" href="{{route('pause-video')}}">Pausar/Continuar</a></li>
-                <li><a class="dropdown-item" href="{{route('clear-queue')}}">Limpar fila</a></li>
-                <li><a class="dropdown-item" href="{{route('loop-video')}}">Ligar loop</a></li>
-                <li><a class="dropdown-item" href="{{route('stop-video')}}">Parar</a></li>
-                <li><a class="dropdown-item" href="{{route('clear-queue')}}">Limpar fila</a></li>
-                <li><a class="dropdown-item" href="{{route('fullscreen-video')}}">Fullscreen</a></li>
+                <li><a class="dropdown-item" href="{{route('stop-video-omxplayer')}}">Parar</a></li>
                 <li><a class="dropdown-item" href="{{route('media-sync')}}">Sincronizar com pasta</a></li>
               </ul>
             </div>
           </div>
           <div class="col-6">
             <div class="d-flex justify-content-end flex-wrap">
-              <button id="add-btn" type="button" class="btn btn-outline-primary m-1" data-bs-toggle="modal" data-bs-target="#infoMedia">
-                <span class="tf-icons bx bx-info-circle"></span>
-              </button>
-              <div class="modal fade" id="infoMedia" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="modalCenterTitle">Informações</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-                    </div>
-                    <form>
-                      @csrf
-                      <div class="modal-body">
-                        <div class="row">
-                          <div class="mb-4">
-                            <label for="loop-field" class="form-label">Loop</label>
-                            @if($loop)
-                              <input class="disabled form-control" type="text" id="loop-field" value="On" name="video" placeholder="Video">
-                            @else
-                              <input class="disabled form-control" type="text" id="loop-field" value="Off" name="video" placeholder="Video">
-                            @endif
-                            <div class="card-body">
-                              <span class="fw-bold">Fila</span>
-                              <ul>
-                                @if(sizeof($queue) == 0)
-                                  <li>
-                                    <span class="text-body">Não há video em fila...</span>
-                                  </li>
-                                @endif
-                                @foreach($queue as $vid)
-                                  <li>
-                                    <span class="text-body">{{$vid}}</span>
-                                  </li>
-                                @endforeach
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Voltar</button>
-                        <button type="submit" class="btn btn-primary">Adicionar</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
               <button id="add-btn" type="button" class="btn btn-primary m-1" data-bs-toggle="modal" data-bs-target="#addMedia">
                 Adicionar
               </button>
@@ -203,14 +150,14 @@
               </td>
               <td>{{ $item['description']  }}</td>
               <td>
-                <a href="{{ Route('play-video', $item->slug) }}">
+                <a href="{{ Route('play-video-omxplayer', $item->slug) }}">
                   <button type="button" id="play-btn{{$item->slug}}" class="btn btn-icon btn-outline-primary">
                     <span class="tf-icons bx bx-play"></span>
                   </button>
                 </a>
-                <a href="{{ Route('queue-video', $item->slug) }}">
+                <a href="{{ Route('loop-video-omxplayer', $item->slug) }}">
                   <button type="button" id="queue-btn{{$item->slug}}" class="btn btn-icon btn-outline-primary">
-                    <span class="tf-icons bx bx-add-to-queue"></span>
+                    <span class="tf-icons bx bx-repost"></span>
                   </button>
                 </a>
                 <button type="button" id="edit-btn{{$item->slug}}" class="btn btn-icon btn-outline-primary" data-bs-toggle="modal" data-bs-target="#edit-modal{{ $item->slug }}">

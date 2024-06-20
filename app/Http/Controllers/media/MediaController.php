@@ -5,7 +5,7 @@ namespace App\Http\Controllers\media;
 use App\Http\Actions\Video_stream_actions\CreateVideoStreamsAction;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\video_stream\VideoStreamController;
-use App\Jobs\PlayVideoJob;
+use App\Jobs\PlayVideoJobOmxplayer;
 use App\Models\video_stream;
 use App\Http\Actions\Video_stream_actions\GetAllVideoStreamsAction;
 use App\Http\Actions\Video_stream_actions\DelVideoStreamsAction;
@@ -20,16 +20,16 @@ class MediaController extends Controller
     //
   }
 
-  public function videos(GetAllVideoStreamsAction $action, PlayVideoJob $job)
+  public function videos_vlc(GetAllVideoStreamsAction $action)
   {
     $videos = $action->handle('');
-    $status = $job->handleGetStatus();
-    $queue = $job->handleCurrentQueue();
-    if (str_contains($status, 'loop'))
-      $loop = True;
-    else
-      $loop = False;
-    return view('eimad.media.videos.videos', compact('videos', 'loop', 'queue'));
+    return view('eimad.media.videos.vlc', compact('videos'));
+  }
+
+  public function videos_omxplayer(GetAllVideoStreamsAction $action)
+  {
+    $videos = $action->handle('');
+    return view('eimad.media.videos.omxplayer', compact('videos'));
   }
 
   public function delvideo(DelVideoStreamsAction $actionDel, string $slug)

@@ -101,7 +101,7 @@ class AuthController extends Controller
       return redirect()->intended('/accounts');
     }
 
-    return redirect()->back()->withErrors(['email' => 'Invalid email or password.']);
+    return redirect()->back()->withErrors(['password' => 'Invalid email or password.']);
 
   }
 

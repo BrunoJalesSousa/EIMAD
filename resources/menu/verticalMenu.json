@@ -8,14 +8,19 @@
     },
     {
       "url": "/media/videos",
-      "name": "Media",
+      "name": "Videos",
       "icon": "menu-icon tf-icons bx bx-video",
       "slug": "media",
       "submenu": [
         {
-          "url": "/media/videos",
-          "name": "Videos",
-          "slug": "media-videos"
+          "url": "/media/omxplayer",
+          "name": "Omxplayer",
+          "slug": "media-omxplayer"
+        },
+        {
+          "url": "/media/vlc",
+          "name": "VLC",
+          "slug": "media-vlc"
         }
       ]
     },
