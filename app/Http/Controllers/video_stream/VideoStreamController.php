@@ -39,7 +39,7 @@ class VideoStreamController extends Controller
       $validator = Validator::make($request->all(), [
         'video' => 'required|mimetypes:video/mp4,video/webm,video/ogg',
       ]);
-
+     
       if ($validator->fails()) {
         return redirect()
           ->back()

@@ -71,11 +71,19 @@ class PlayVideoJob implements ShouldQueue
     if (!$response) {
       $this->openVLC();
     }
-    $this->sendCommandToVLC('add "'. str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"');
+    //$command = 'add "' . str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"';
+    //dd($command);
+    //$this->sendCommandToVLC($command);
+    dd('omxplayer -p -o hdmi ' . str_replace('\\', '/', storage_path('app/public' . $this->command)));
+    
+    $command = 'sudo omxplayer -p -o hdmi ' . str_replace('\\', '/', storage_path('app/public' . $this->command));
+    exec($command, $output, $returnVar);
+    dd($output);
   }
 
   public function handleGetStatus()
   {
+    return true;
     return $this->checkStatusVLC();
   }
 
@@ -151,6 +159,7 @@ class PlayVideoJob implements ShouldQueue
 
   public function handleCurrentQueue()
   {
+    return [];
     $playlist = $this->askVlcForQueue();
     return $this->parseQueue($playlist);
   }
@@ -229,6 +238,7 @@ class PlayVideoJob implements ShouldQueue
 
   private function checkStatusVLC()
   {
+    return true;
     // Change the IP and port if VLC is running on a different machine or port
     $fp = fsockopen("127.0.0.1", 12345, $errno, $errstr, 5);
 

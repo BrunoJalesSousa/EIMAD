@@ -16,7 +16,7 @@ class SyncWithFolderVideoStreamsAction
 
   public function handle()
   {
-    $directoryPath = storage_path('app\public\uploads\videos'); // Replace with your directory path
+    $directoryPath = storage_path('app/public/uploads/videos'); // Replace with your directory path
 
     // Get all files in the specified directory
     $files = File::files($directoryPath);
@@ -30,14 +30,14 @@ class SyncWithFolderVideoStreamsAction
     }, $files);
 
     foreach ($fileNames as $file) {
-      $video = video_stream::where('video', '\uploads\videos\\' . $file)->first();
+      $video = video_stream::where('video', '/uploads/videos/' . $file)->first();
       if ($video == null) {
         $description = str_replace(' ', '', $file);
         $slug = $description . Carbon::now()->format('m-d-Y');
         $numberVideos = video_stream::all()->count();
         $video_stream = video_stream::create([
           'slug' => $slug,
-          'video' => '\uploads\videos\\'. $file,
+          'video' => '/uploads/videos/'. $file,
           'description' => $description,
           'order' => $numberVideos + 1,
         ]);

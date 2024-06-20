@@ -17,7 +17,7 @@ class CreateVideoStreamsAction
     $video = $request->file('video');
     $description = str_replace(' ', '', $request->video->getClientOriginalName());
     $slug = str_replace(' ', '', $description) . Carbon::now()->format('m-d-Y');
-    $videoPath = $video->storeAs('uploads\videos', $slug . '.' . $video->getClientOriginalExtension());
+    $videoPath = $video->storeAs('uploads/videos', $slug . '.' . $video->getClientOriginalExtension());
     $numberVideos = video_stream::all()->count();
     $video_stream = video_stream::create([
       'slug' => $slug,
