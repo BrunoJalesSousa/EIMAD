@@ -20,7 +20,7 @@ class CreateVideoStreamsAction
     $videoPath = $video->storeAs('uploads/videos', $slug . '.' . $video->getClientOriginalExtension());
     $numberVideos = video_stream::all()->count();
     $video_stream = video_stream::create([
-      'slug' => $slug,
+      'slug' => str_replace('.', '', $slug),
       'video' => '\\' . $videoPath,
       'description' => $description,
       'order' => $numberVideos + 1,

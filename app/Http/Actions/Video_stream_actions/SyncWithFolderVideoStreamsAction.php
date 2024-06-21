@@ -36,7 +36,7 @@ class SyncWithFolderVideoStreamsAction
         $slug = $description . Carbon::now()->format('m-d-Y');
         $numberVideos = video_stream::all()->count();
         $video_stream = video_stream::create([
-          'slug' => $slug,
+          'slug' => str_replace('.', '', $slug),
           'video' => '/uploads/videos/'. $file,
           'description' => $description,
           'order' => $numberVideos + 1,
