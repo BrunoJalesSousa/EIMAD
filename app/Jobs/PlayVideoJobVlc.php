@@ -73,7 +73,8 @@ class PlayVideoJobVlc implements ShouldQueue
     //  $this->openVLC();
     //}
 
-    $command = 'add "' . str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"';
+    $command = 'add ' . str_replace('\\', '/', storage_path('app/public' . $this->command));
+    //dd($command);
     $this->sendCommandToVLC($command);
   }
 

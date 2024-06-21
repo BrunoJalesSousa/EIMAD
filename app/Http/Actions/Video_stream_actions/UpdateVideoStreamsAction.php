@@ -17,15 +17,6 @@ class UpdateVideoStreamsAction
   {
     $row = video_stream::where('slug', $slug);
 
-    if ($request->file('image') != null) {
-      $img = $request->file('image');
-      $slug = str_replace(' ', '', $request->description) . Carbon::now()->format('m-d-Y');
-      $imagePath = $img->storeAs('/uploads/images', $slug . '.' . $img->getClientOriginalExtension());
-      $request->image = $imagePath;
-      Storage::delete([
-        $row->image,
-      ]);
-    }
     if ($request->file('video') != null) {
       $video = $request->file('video');
       $slug = str_replace(' ', '', $request->description) . Carbon::now()->format('m-d-Y');
@@ -37,8 +28,10 @@ class UpdateVideoStreamsAction
     }
 
     $values = $request->toArray();
+  
     unset($values['_token']);
     unset($values['_method']);
+    unset($values['query_string']);
 
     return $row->update($values);
   }

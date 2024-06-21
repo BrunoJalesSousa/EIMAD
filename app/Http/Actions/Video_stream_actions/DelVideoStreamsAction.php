@@ -20,7 +20,6 @@ class DelVideoStreamsAction
     $values = $row->get();
     Storage::delete([
       $values[0]->video,
-      $values[0]->image,
     ]);
 
     return $row->delete();
