@@ -99,7 +99,7 @@ class PlayVideoJobVlc implements ShouldQueue
   public function handleLoopAll()
   {
     //$this->sendCommandToVLC('clear');
-    $videos = video_stream::all()->sortBy('order');
+    $videos = video_stream::orderBy('order', 'asc')->get();
     /*
     $playlistContent = "#EXTM3U\n"; // M3U file header
 
