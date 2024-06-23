@@ -15,7 +15,13 @@ class ProcessController extends Controller
   {
     $video = video_stream::where('slug', $slug)->firstOrFail();
     $job->setCommand($video->video);
-    $job->handleQueueVideo();
+    $answer = $job->handleQueueVideo();
+    if ($answer == false) {
+	return back()
+	->with('title', 'Erro...')
+	->with('message', 'O VLC não está aberto/com o RC ativo!')
+	->with('style', 'error');
+    }
     return back()
       ->with('title', 'Sucesso!')
       ->with('message', 'O video ' . $video->description . ' foi adicionado à fila!')
@@ -26,7 +32,13 @@ class ProcessController extends Controller
   {
     $video = video_stream::where('slug', $slug)->firstOrFail();
     $job->setCommand($video->video);
-    $job->handleQueueVideo();
+    $answer = $job->handleQueueVideo();
+    if ($answer == false) {
+	return back()
+	->with('title', 'Erro...')
+	->with('message', 'O VLC não está aberto/com o RC ativo!')
+	->with('style', 'error');
+    }
     return back()
       ->with('title', 'Sucesso!')
       ->with('message', 'O video ' . $video->description . ' foi adicionado à fila!')
@@ -37,7 +49,13 @@ class ProcessController extends Controller
   {
     $video = video_stream::where('slug', $slug)->firstOrFail();
     $job->setCommand($video->video);
-    $job->handlePlay();
+    $answer = $job->handlePlay();
+    if ($answer == false) {
+	return back()
+	->with('title', 'Erro...')
+	->with('message', 'O VLC não está aberto/com o RC ativo!')
+	->with('style', 'error');
+    }
     return back()
       ->with('title', 'Sucesso!')
       ->with('message', 'O video ' . $video->description . ' está a reproduzir!')
@@ -49,7 +67,13 @@ class ProcessController extends Controller
   {
     $video = video_stream::where('slug', $slug)->firstOrFail();
     $job->setCommand($video->video);
-    $job->handlePlay();
+    $answer = $job->handlePlay();
+    if ($answer == false) {
+	return back()
+	->with('title', 'Erro...')
+	->with('message', 'O VLC não está aberto/com o RC ativo!')
+	->with('style', 'error');
+    }
     return back()
       ->with('title', 'Sucesso!')
       ->with('message', 'O video ' . $video->description . ' está a reproduzir!')
@@ -67,7 +91,13 @@ class ProcessController extends Controller
 
   public function clearQueueVlc(PlayVideoJobVlc $job)
   {
-    $job->handleClearQueue();
+    $answer = $job->handleClearQueue();
+    if ($answer == false) {
+	return back()
+	->with('title', 'Erro...')
+	->with('message', 'O VLC não está aberto/com o RC ativo!')
+	->with('style', 'error');
+    }
     return back()
       ->with('title', 'Sucesso!')
       ->with('message', 'A fila foi limpa')
@@ -83,7 +113,13 @@ class ProcessController extends Controller
   }
 
   public function fullscreenVlc(PlayVideoJobVlc $job) {
-    $job->handleFullscreen();
+    $answer = $job->handleFullscreen();
+    if ($answer == false) {
+	return back()
+	->with('title', 'Erro...')
+	->with('message', 'O VLC não está aberto/com o RC ativo!')
+	->with('style', 'error');
+    }
     return back()
       ->with('title', 'Sucesso!')
       ->with('message', 'O player está em tela cheia!')
@@ -101,7 +137,13 @@ class ProcessController extends Controller
 
   public function pauseVideoVlc(PlayVideoJobVlc $job)
   {
-    $job->handlePause();
+    $answer = $job->handlePause();
+    if ($answer == false) {
+	return back()
+	->with('title', 'Erro...')
+	->with('message', 'O VLC não está aberto/com o RC ativo!')
+	->with('style', 'error');
+    }
     return back()
       ->with('title', 'Sucesso!')
       ->with('message', 'O player está pausado!')
@@ -119,7 +161,13 @@ class ProcessController extends Controller
 
   public function stopVideoVlc(PlayVideoJobVlc $job)
   {
-    $job->handleStop();
+    $answer = $job->handleStop();
+    if ($answer == false) {
+	return back()
+	->with('title', 'Erro...')
+	->with('message', 'O VLC não está aberto/com o RC ativo!')
+	->with('style', 'error');
+    }
     return back()
       ->with('title', 'Sucesso!')
       ->with('message', 'A reproduçao parou!')
@@ -137,7 +185,13 @@ class ProcessController extends Controller
 
   public function resumeVideoVlc(PlayVideoJobVlc $job)
   {
-    $job->handleResume();
+    $answer = $job->handleResume();
+    if ($answer == false) {
+	return back()
+	->with('title', 'Erro...')
+	->with('message', 'O VLC não está aberto/com o RC ativo!')
+	->with('style', 'error');
+    }
     return back()
       ->with('title', 'Sucesso!')
       ->with('message', 'A reproduçao foi retomada!')
@@ -159,7 +213,13 @@ class ProcessController extends Controller
   {
     $video = video_stream::where('slug', $slug)->firstOrFail();
     $job->setCommand($video->video);
-    $job->handleLoop();
+    $answer = $job->handleLoop();
+    if ($answer == false) {
+	return back()
+	->with('title', 'Erro...')
+	->with('message', 'O VLC não está aberto/com o RC ativo!')
+	->with('style', 'error');
+    }
     return back()
       ->with('title', 'Sucesso!')
       ->with('message', 'O video está em loop!')
@@ -177,7 +237,13 @@ class ProcessController extends Controller
 
   public function loopAllVideoVlc(PlayVideoJobVlc $job)
   {
-    $job->handleLoopAll();
+    $answer = $job->handleLoopAll();
+    if ($answer == false) {
+	return back()
+	->with('title', 'Erro...')
+	->with('message', 'O VLC não está aberto/com o RC ativo!')
+	->with('style', 'error');
+    }
     return back()
       ->with('title', 'Sucesso!')
       ->with('message', 'O video está em loop!')

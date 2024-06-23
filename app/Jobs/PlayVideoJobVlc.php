@@ -30,7 +30,8 @@ class PlayVideoJobVlc implements ShouldQueue
 
   public function handleQueueVideo()
   {
-    $this->sendCommandToVLC('enqueue "'. str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"');
+    $answer = $this->sendCommandToVLC('enqueue "'. str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"');
+    if ($answer == false) return false;
   }
 
   public function setCommand($command)
@@ -41,31 +42,35 @@ class PlayVideoJobVlc implements ShouldQueue
   /**
    * Execute the job.
    */
-  public function handleFullscreen(): void
+  public function handleFullscreen()
   {
     //$openCommand = 'enqueue --one ""';
     //$this->sendCommandToVLC($openCommand);
-    $this->sendCommandToVLC('fullscreen');
+    $answer = $this->sendCommandToVLC('fullscreen');
+    if ($answer == false) return false;
   }
 
 
 
-  public function handleClearQueue(): void
+  public function handleClearQueue()
   {
-    $this->sendCommandToVLC('clear');
+    $answer = $this->sendCommandToVLC('clear');
+    if ($answer == false) return false;
   }
 
-  public function handlePause(): void
+  public function handlePause()
   {
-    $this->sendCommandToVLC('pause');
+    $answer = $this->sendCommandToVLC('pause');
+    if ($answer == false) return false;
   }
 
-  public function handleStop(): void
+  public function handleStop()
   {
-    $this->sendCommandToVLC('stop');
+    $answer = $this->sendCommandToVLC('stop');
+    if ($answer == false) return false;
   }
 
-  public function handlePlay(): void
+  public function handlePlay()
   {
 
     //$response = $this->isVlcRunning();
@@ -75,15 +80,17 @@ class PlayVideoJobVlc implements ShouldQueue
 
     $command = 'add ' . str_replace('\\', '/', storage_path('app/public' . $this->command));
     //dd($command);
-    $this->sendCommandToVLC($command);
+    $answer = $this->sendCommandToVLC($command);
+    if ($answer == false) return false;
   }
 
-  public function handleLoop(): void
+  public function handleLoop()
   {
-    $this->sendCommandToVLC('repeat');
+    $answer = $this->sendCommandToVLC('repeat');
+    if ($answer == false) return false;
   }
 
-  public function handleLoopAll(): void
+  public function handleLoopAll()
   {
     //$this->sendCommandToVLC('clear');
     $videos = video_stream::all()->sortBy('order');
@@ -99,9 +106,10 @@ class PlayVideoJobVlc implements ShouldQueue
     file_put_contents($playlistPath, $playlistContent);
     */
     foreach ($videos as $video) {
-      if ($video->order == 1)
-        $this->sendCommandToVLC('add "' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
-      else
+      if ($video->order == 1) {
+        $answer = $this->sendCommandToVLC('add "' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
+        if ($answer == false) return false;
+      } else
         $this->sendCommandToVLC('enqueue "' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
     }
   }
@@ -112,13 +120,18 @@ class PlayVideoJobVlc implements ShouldQueue
     $host = '127.0.0.1';
     $port = 12345;
 
-
-    $fp = fsockopen($host, $port, $errno, $errstr, 30);
-    if (!$fp) {
-      throw new \RuntimeException("Failed to connect to VLC: $errstr ($errno)");
+    try {
+    	$fp = fsockopen($host, $port, $errno, $errstr, 30);
+    	if (!$fp) {
+            throw new \RuntimeException("Failed to connect to VLC: $errstr ($errno)");
+    	}
+    	fwrite($fp, $command . "\n");
+    	fclose($fp);
+    } catch (Exception $e) {
+	// Handle the exception by displaying an error message or 
+	// logging it
+        return false;
     }
-    fwrite($fp, $command . "\n");
-    fclose($fp);
   }
 
   protected function openVLC()
@@ -229,32 +242,32 @@ class PlayVideoJobVlc implements ShouldQueue
   {
     return true;
     // Change the IP and port if VLC is running on a different machine or port
-    $fp = fsockopen("127.0.0.1", 12345, $errno, $errstr, 5);
+    
+    try {
+	$fp = fsockopen("127.0.0.1", 12345, $errno, $errstr, 5);
+      	// Set stream timeout (5 seconds)
+        stream_set_timeout($fp, 5);
 
-    if (!$fp) {
-      return "$errstr ($errno)<br />\n";
-    } else {
-      // Set stream timeout (5 seconds)
-      stream_set_timeout($fp, 5);
+        // Send the command
+      	fwrite($fp, 'status' . "\n");
 
-      // Send the command
-      fwrite($fp, 'status' . "\n");
-
-      // Set the stream to non-blocking mode
-      stream_set_blocking($fp, false);
-      // Read the response
-      $response = '';
-      while (!feof($fp)) {
-        $line = fgets($fp);
-        if ($line === false) {
-          break;
+      	// Set the stream to non-blocking mode
+      	stream_set_blocking($fp, false);
+      	// Read the response
+      	$response = '';
+      	while (!feof($fp)) {
+            $line = fgets($fp);
+            if ($line === false) {
+                break;
+            }
+            $response .= $line;
         }
-        $response .= $line;
-      }
 
-      fclose($fp);
-
-      return $response;
+      	fclose($fp);
+    } catch (Exception $e) {
+	// Handle the exception by displaying an error message or 
+	// logging it
+        return response()->json(['error' => $e->getMessage()], 500);
     }
   }
 }
