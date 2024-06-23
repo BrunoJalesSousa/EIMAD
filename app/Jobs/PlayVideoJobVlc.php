@@ -31,7 +31,7 @@ class PlayVideoJobVlc implements ShouldQueue
   public function handleQueueVideo()
   {
     $answer = $this->sendCommandToVLC('enqueue "'. str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"');
-    if ($answer == false) return false;
+    return $answer;
   }
 
   public function setCommand($command)
@@ -47,7 +47,7 @@ class PlayVideoJobVlc implements ShouldQueue
     //$openCommand = 'enqueue --one ""';
     //$this->sendCommandToVLC($openCommand);
     $answer = $this->sendCommandToVLC('fullscreen');
-    if ($answer == false) return false;
+    return $answer;
   }
 
 
@@ -55,19 +55,19 @@ class PlayVideoJobVlc implements ShouldQueue
   public function handleClearQueue()
   {
     $answer = $this->sendCommandToVLC('clear');
-    if ($answer == false) return false;
+    return $answer;
   }
 
   public function handlePause()
   {
     $answer = $this->sendCommandToVLC('pause');
-    if ($answer == false) return false;
+    return $answer;
   }
 
   public function handleStop()
   {
     $answer = $this->sendCommandToVLC('stop');
-    if ($answer == false) return false;
+    return $answer;
   }
 
   public function handlePlay()
@@ -81,13 +81,13 @@ class PlayVideoJobVlc implements ShouldQueue
     $command = 'add ' . str_replace('\\', '/', storage_path('app/public' . $this->command));
     //dd($command);
     $answer = $this->sendCommandToVLC($command);
-    if ($answer == false) return false;
+    return $answer;
   }
 
   public function handleLoop()
   {
     $answer = $this->sendCommandToVLC('repeat');
-    if ($answer == false) return false;
+    return $answer;
   }
 
   public function handleLoopAll()
@@ -105,13 +105,16 @@ class PlayVideoJobVlc implements ShouldQueue
     $playlistPath = 'C:\\Users\\senro\\PhpstormProjects\\EIMAD\\storage\\app\\allMedia.m3u';
     file_put_contents($playlistPath, $playlistContent);
     */
+    $answer = true;
     foreach ($videos as $video) {
-      if ($video->order == 1) {
+      if ($video->order == 1)
         $answer = $this->sendCommandToVLC('add "' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
-        if ($answer == false) return false;
-      } else
-        $this->sendCommandToVLC('enqueue "' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
+      else
+        $answer = $this->sendCommandToVLC('enqueue "' . str_replace('\\', '/', storage_path('app/public' . $video->video)) . '"');
+      if (!$answer)
+        return $answer;
     }
+    return $answer;
   }
 
   protected function sendCommandToVLC(string $command)
@@ -127,8 +130,9 @@ class PlayVideoJobVlc implements ShouldQueue
     	}
     	fwrite($fp, $command . "\n");
     	fclose($fp);
+      return true;
     } catch (Exception $e) {
-	// Handle the exception by displaying an error message or 
+	// Handle the exception by displaying an error message or
 	// logging it
         return false;
     }
@@ -242,7 +246,7 @@ class PlayVideoJobVlc implements ShouldQueue
   {
     return true;
     // Change the IP and port if VLC is running on a different machine or port
-    
+
     try {
 	$fp = fsockopen("127.0.0.1", 12345, $errno, $errstr, 5);
       	// Set stream timeout (5 seconds)
@@ -265,7 +269,7 @@ class PlayVideoJobVlc implements ShouldQueue
 
       	fclose($fp);
     } catch (Exception $e) {
-	// Handle the exception by displaying an error message or 
+	// Handle the exception by displaying an error message or
 	// logging it
         return response()->json(['error' => $e->getMessage()], 500);
     }
