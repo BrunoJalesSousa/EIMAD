@@ -45,11 +45,10 @@
                 Ações
               </button>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{route('loop-video-vlc')}}">Passar todos</a></li>
+                <li><a class="dropdown-item" href="{{route('loop-all-video-vlc')}}">Passar todos</a></li>
                 <li><a class="dropdown-item" href="{{route('pause-video-vlc')}}">Pausar/Continuar</a></li>
                 <li><a class="dropdown-item" href="{{route('clear-queue-vlc')}}">Limpar fila</a></li>
                 <li><a class="dropdown-item" href="{{route('loop-video-vlc')}}">Ligar loop</a></li>
-                <li><a class="dropdown-item" href="{{route('loop-off-video-vlc')}}">Desligar loop</a></li>
                 <li><a class="dropdown-item" href="{{route('stop-video-vlc')}}">Parar</a></li>
                 <li><a class="dropdown-item" href="{{route('fullscreen-video-vlc')}}">Fullscreen</a></li>
                 <li><a class="dropdown-item" href="{{route('media-sync')}}">Sincronizar com pasta</a></li>
