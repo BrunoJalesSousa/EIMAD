@@ -217,12 +217,10 @@ class ProcessController extends Controller
       ->with('style', 'success');
   }
 
-    public function loopVideoVlc(string $slug, PlayVideoJobVlc $job)
+    public function loopVideoVlc(PlayVideoJobVlc $job)
     {
-        $video = video_stream::where('slug', $slug)->firstOrFail();
-        $job->setCommand($video->video);
         $answer = $job->handleLoop();
-        if ($answer == false) {
+        if (!$answer) {
             return back()
                 ->with('title', 'Erro...')
                 ->with('message', 'O VLC não está aberto/com o RC ativo!')
@@ -236,10 +234,8 @@ class ProcessController extends Controller
 
 
 
-    public function loopOffVideoVlc(string $slug, PlayVideoJobVlc $job)
+    public function loopOffVideoVlc(PlayVideoJobVlc $job)
     {
-        $video = video_stream::where('slug', $slug)->firstOrFail();
-        $job->setCommand($video->video);
         $answer = $job->handleLoopOff();
         if ($answer == false) {
             return back()
