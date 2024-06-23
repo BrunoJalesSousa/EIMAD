@@ -13,11 +13,6 @@
       "slug": "media",
       "submenu": [
         {
-          "url": "/media/omxplayer",
-          "name": "Omxplayer",
-          "slug": "media-omxplayer"
-        },
-        {
           "url": "/media/vlc",
           "name": "VLC",
           "slug": "media-vlc"

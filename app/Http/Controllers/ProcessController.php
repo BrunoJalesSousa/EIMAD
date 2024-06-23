@@ -11,6 +11,14 @@ use Illuminate\Support\Facades\Process;
 
 class ProcessController extends Controller
 {
+  public function openVlc()
+  {
+    exec('sudo systemctl start vlc.service');
+    return back()
+      ->with('title', 'Talvez?')
+      ->with('message', 'O VLC tentou abrir')
+      ->with('style', 'warning');
+  }
   public function queueVideoOmxplayer(string $slug, PlayVideoJobOmxplayer $job)
   {
     $video = video_stream::where('slug', $slug)->firstOrFail();

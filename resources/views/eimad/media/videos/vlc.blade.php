@@ -52,6 +52,7 @@
                 <li><a class="dropdown-item" href="{{route('stop-video-vlc')}}">Parar</a></li>
                 <li><a class="dropdown-item" href="{{route('fullscreen-video-vlc')}}">Fullscreen</a></li>
                 <li><a class="dropdown-item" href="{{route('media-sync')}}">Sincronizar com pasta</a></li>
+                <li><a class="dropdown-item" href="{{route('open-vlc')}}">Tentar abrir VLC...</a></li>
               </ul>
             </div>
           </div>

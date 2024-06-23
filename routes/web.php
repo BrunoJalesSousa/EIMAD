@@ -59,6 +59,7 @@ Route::get('media/vlc/stop', [ProcessController::class, 'stopVideoVlc'])->name('
 Route::get('media/vlc/loop', [ProcessController::class, 'loopAllVideoVlc'])->name('loop-video-vlc')->middleware('auth');
 Route::get('media/vlc/clear-queue', [ProcessController::class, 'clearQueueVlc'])->name('clear-queue-vlc')->middleware('auth');
 Route::get('media/vlc/queue-video/{slug}', [ProcessController::class, 'queueVideoVlc'])->name('queue-video-vlc')->middleware('auth');
+Route::get('media/vlc/open', [ProcessController::class, 'openVlc'])->name('open-vlc')->middleware('auth');
 
 
 // layout
