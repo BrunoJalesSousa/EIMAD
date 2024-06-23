@@ -84,11 +84,17 @@ class PlayVideoJobVlc implements ShouldQueue
     return $answer;
   }
 
-  public function handleLoop()
-  {
-    $answer = $this->sendCommandToVLC('repeat');
-    return $answer;
-  }
+    public function handleLoop()
+    {
+        $answer = $this->sendCommandToVLC('repeat');
+        return $answer;
+    }
+
+    public function handleLoopOff()
+    {
+        $answer = $this->sendCommandToVLC('loop off');
+        return $answer;
+    }
 
   public function handleLoopAll()
   {

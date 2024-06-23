@@ -56,7 +56,9 @@ Route::get('media/vlc/play/{slug}', [ProcessController::class, 'playVideoVlc'])-
 Route::get('media/vlc/fullscreen', [ProcessController::class, 'fullscreenVlc'])->name('fullscreen-video-vlc')->middleware('auth');
 Route::get('media/vlc/pause', [ProcessController::class, 'pauseVideoVlc'])->name('pause-video-vlc')->middleware('auth');
 Route::get('media/vlc/stop', [ProcessController::class, 'stopVideoVlc'])->name('stop-video-vlc')->middleware('auth');
-Route::get('media/vlc/loop', [ProcessController::class, 'loopAllVideoVlc'])->name('loop-video-vlc')->middleware('auth');
+Route::get('media/vlc/loop', [ProcessController::class, 'loopVideoVlc'])->name('loop-video-vlc')->middleware('auth');
+Route::get('media/vlc/loop/off', [ProcessController::class, 'loopOffVideoVlc'])->name('loop-off-video-vlc')->middleware('auth');
+Route::get('media/vlc/loop/all', [ProcessController::class, 'loopAllVideoVlc'])->name('loop-all-video-vlc')->middleware('auth');
 Route::get('media/vlc/clear-queue', [ProcessController::class, 'clearQueueVlc'])->name('clear-queue-vlc')->middleware('auth');
 Route::get('media/vlc/queue-video/{slug}', [ProcessController::class, 'queueVideoVlc'])->name('queue-video-vlc')->middleware('auth');
 Route::get('media/vlc/open', [ProcessController::class, 'openVlc'])->name('open-vlc')->middleware('auth');

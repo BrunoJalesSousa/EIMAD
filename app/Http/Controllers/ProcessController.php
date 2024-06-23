@@ -42,10 +42,10 @@ class ProcessController extends Controller
     $job->setCommand($video->video);
     $answer = $job->handleQueueVideo();
     if ($answer == false) {
-	return back()
-	->with('title', 'Erro...')
-	->with('message', 'O VLC não está aberto/com o RC ativo!')
-	->with('style', 'error');
+      return back()
+      ->with('title', 'Erro...')
+      ->with('message', 'O VLC não está aberto/com o RC ativo!')
+      ->with('style', 'error');
     }
     return back()
       ->with('title', 'Sucesso!')
@@ -217,24 +217,43 @@ class ProcessController extends Controller
       ->with('style', 'success');
   }
 
-  public function loopVideoVlc(string $slug, PlayVideoJobVlc $job)
-  {
-    $video = video_stream::where('slug', $slug)->firstOrFail();
-    $job->setCommand($video->video);
-    $answer = $job->handleLoop();
-    if ($answer == false) {
-	return back()
-	->with('title', 'Erro...')
-	->with('message', 'O VLC não está aberto/com o RC ativo!')
-	->with('style', 'error');
+    public function loopVideoVlc(string $slug, PlayVideoJobVlc $job)
+    {
+        $video = video_stream::where('slug', $slug)->firstOrFail();
+        $job->setCommand($video->video);
+        $answer = $job->handleLoop();
+        if ($answer == false) {
+            return back()
+                ->with('title', 'Erro...')
+                ->with('message', 'O VLC não está aberto/com o RC ativo!')
+                ->with('style', 'error');
+        }
+        return back()
+            ->with('title', 'Sucesso!')
+            ->with('message', 'O video está em loop!')
+            ->with('style', 'success');
     }
-    return back()
-      ->with('title', 'Sucesso!')
-      ->with('message', 'O video está em loop!')
-      ->with('style', 'success');
-  }
 
-  public function loopAllVideoOmxplayer(PlayVideoJobOmxplayer $job)
+
+
+    public function loopOffVideoVlc(string $slug, PlayVideoJobVlc $job)
+    {
+        $video = video_stream::where('slug', $slug)->firstOrFail();
+        $job->setCommand($video->video);
+        $answer = $job->handleLoopOff();
+        if ($answer == false) {
+            return back()
+                ->with('title', 'Erro...')
+                ->with('message', 'O VLC não está aberto/com o RC ativo!')
+                ->with('style', 'error');
+        }
+        return back()
+            ->with('title', 'Sucesso!')
+            ->with('message', 'O video está em loop!')
+            ->with('style', 'success');
+    }
+
+    public function loopAllVideoOmxplayer(PlayVideoJobOmxplayer $job)
   {
     $job->handleLoopAll();
     return back()
