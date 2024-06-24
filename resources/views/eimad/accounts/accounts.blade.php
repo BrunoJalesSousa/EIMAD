@@ -64,7 +64,7 @@
                           <h5 class="modal-title" id="modalCenterTitle">Apagar a conta do email {{$item->email}}?</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Voltar"></button>
                         </div>
-                        <form action="{{ route('del-account', $item->name) }}" method="get">
+                        <form action="{{ route('del-account', $item->name) }}" method="post">
                           @csrf
                           <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Voltar</button>
