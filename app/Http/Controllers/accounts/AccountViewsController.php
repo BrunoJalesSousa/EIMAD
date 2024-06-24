@@ -110,8 +110,13 @@ class AccountViewsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(video_stream $video_stream)
+    public function destroy(string $name)
     {
-        //
+        $user = User::where('name', $name)->delete();
+
+        return back()
+          ->with( 'message', 'Conta removida com sucesso!')
+          ->with('title', 'Sucesso!')
+          ->with('style', 'success');
     }
 }

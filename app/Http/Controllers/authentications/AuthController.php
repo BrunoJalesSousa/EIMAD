@@ -70,6 +70,16 @@ class AuthController extends Controller
         ->with('style', 'warning');
     }
 
+    $other = User::where('user', $request->name);
+    if (sizeof($other) > 0) {
+      $validator->errors()->add('name', 'name');
+      return back()
+        ->withErrors($validator)
+        ->with('title', 'Sem sucesso...')
+        ->with('message', 'Não foi possivel criar o utilizador')
+        ->with('style', 'warning');
+    }
+
 
     $user = User::create([
       'name' => $request->name,

@@ -50,22 +50,22 @@
               <td>{{ $item['email']  }}</td>
               <td>
                 @if($item->email == Auth::user()->email)
-                
+
                 @else
-                  <button type="button" class="btn btn-icon btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delAccount{{ str_replace(' ', '', $item->username) }}">
+                  <button type="button" class="btn btn-icon btn-outline-danger" data-bs-toggle="modal" data-bs-target="#delAccount{{ str_replace(' ', '', $item->name) }}">
                     <span class="tf-icons bx bx-trash"></span>
                   </button>
 
                   <!-- Modal -->
-                  <div class="modal fade" id="delAccount{{str_replace(' ', '', $item->username)}}" tabindex="-1" aria-hidden="true">
+                  <div class="modal fade" id="delAccount{{str_replace(' ', '', $item->name)}}" tabindex="-1" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
                           <h5 class="modal-title" id="modalCenterTitle">Apagar a conta do email {{$item->email}}?</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Voltar"></button>
                         </div>
-                        <form action="{{ route('del-account', $item->email) }}" method="get">
-                          <--@csrf--!>
+                        <form action="{{ route('del-account', $item->name) }}" method="post">
+                          @csrf
                           <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Voltar</button>
                             <button type="submit" class="btn btn-danger">Apagar</button>
