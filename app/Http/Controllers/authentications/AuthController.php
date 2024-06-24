@@ -70,7 +70,7 @@ class AuthController extends Controller
         ->with('style', 'warning');
     }
 
-    $other = User::where('user', $request->name)->get();
+    $other = User::where('name', $request->name)->get();
     if (sizeof($other) > 0) {
       $validator->errors()->add('name', 'name');
       return back()
