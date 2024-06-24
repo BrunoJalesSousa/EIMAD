@@ -30,7 +30,7 @@ class PlayVideoJobVlc implements ShouldQueue
 
   public function handleQueueVideo()
   {
-    $answer = $this->sendCommandToVLC('enqueue "'. str_replace('\\', '/', storage_path('app/public' . $this->command)) . '"');
+    $answer = $this->sendCommandToVLC('enqueue '. str_replace('\\', '/', storage_path('app/public' . $this->command)));
     return $answer;
   }
 
@@ -100,7 +100,9 @@ class PlayVideoJobVlc implements ShouldQueue
   {
     //$this->sendCommandToVLC('clear');
     $videos = video_stream::orderBy('order', 'asc')->get();
-    /*
+    
+	//dd($videos);
+/*
     $playlistContent = "#EXTM3U\n"; // M3U file header
 
     foreach ($videos as $video) {
@@ -114,7 +116,7 @@ class PlayVideoJobVlc implements ShouldQueue
     $answer = true;
     foreach ($videos as $video) {
       if ($video->order == 1)
-        $answer = $this->sendCommandToVLC('add ' . str_replace('\\', '/', storage_path('app/public' . $this->command)));
+        $answer = $this->sendCommandToVLC('add ' . str_replace('\\', '/', storage_path('app/public' . $video->video)));
       else
         $answer = $this->sendCommandToVLC('enqueue ' . str_replace('\\', '/', storage_path('app/public' . $video->video)));
       if (!$answer)

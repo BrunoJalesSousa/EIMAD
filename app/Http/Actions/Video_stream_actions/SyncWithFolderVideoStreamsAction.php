@@ -30,7 +30,7 @@ class SyncWithFolderVideoStreamsAction
     }, $files);
 
     foreach ($fileNames as $file) {
-      $video = video_stream::where('video', '/uploads/videos/' . $file)->first();
+      $video = video_stream::where('video', '\uploads/videos/' . $file)->first();
       if ($video == null) {
         $description = str_replace(' ', '', $file);
         $slug = $description . Carbon::now()->format('m-d-Y');
