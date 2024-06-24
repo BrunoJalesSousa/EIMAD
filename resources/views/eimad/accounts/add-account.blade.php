@@ -64,7 +64,7 @@
               </div>
             </div>
             <div class="row" style="position:relative; left: 1rem;">
-              <div class="col-lg-6 mb-6">
+              <div class="col-12 mb-12">
                 <button type="submit" class="btn btn-primary d-grid w-100">
                   Registar Conta
                 </button>
@@ -72,7 +72,7 @@
             </div>
           </div>
         </form>
-        <div class="col-lg-6 mb-6">
+        <div class="col-12 mb-12">
           <a href="{{ url('/accounts') }}">
             <button class="btn btn-secondary d-grid w-100">
               Voltar
