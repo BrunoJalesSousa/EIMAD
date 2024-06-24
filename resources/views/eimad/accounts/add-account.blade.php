@@ -65,7 +65,7 @@
             </div>
             <div class="row" style="position:relative; left: 1rem;">
               <div class="col-lg-6 mb-6">
-                <a href="{{ url()->previous() }}">
+                <a href="{{ route('users') }}">
                   <button type="submit" class="btn btn-secondary d-grid w-100">
                     Voltar
                   </button>
