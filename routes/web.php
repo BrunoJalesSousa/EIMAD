@@ -33,7 +33,7 @@ Route::post('/register-account', [AuthController::class, 'registerAccount'])->na
 
 // Users routes
 Route::get('/accounts', [AccountViewsController::class, 'index'])->name('users')->middleware('auth');
-Route::get('/accounts/del/{slug}', [AccountViewsController::class, 'destroy'])->name('del-account')->middleware('auth');
+Route::post('/accounts/del/{slug}', [AccountViewsController::class, 'destroy'])->name('del-account')->middleware('auth');
 Route::get('/accounts/add', [AccountViewsController::class, 'add'])->name('add-account')->middleware('auth');
 
 // Media routes
