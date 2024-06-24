@@ -92,7 +92,7 @@ class AuthController extends Controller
     $users = User::all();
 
     // Redirect the user after registration
-    return view('eimad.accounts.accounts', compact('users'))
+    return back()
       ->with('title', 'Sucesso!')
       ->with('message', 'Utilizador adicionado com sucesso')
       ->with('style', 'success');
