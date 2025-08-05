@@ -131,20 +131,27 @@ class PlayVideoJobVlc implements ShouldQueue
     $host = '127.0.0.1';
     $port = 12345;
 
-    $fp = @fsockopen($host, $port, $errno, $errstr, 30);
+    try {
+      $context = stream_context_create();
+      $fp = @stream_socket_client("tcp://$host:$port", $errno, $errstr, 1, STREAM_CLIENT_CONNECT, $context);
 
-    dd($fp);
+      if (!$fp) {
+        return back()
+          ->with('message', 'Será que o VLC está aberto?.. com RC ativo?')
+          ->with('title', 'Erro!')
+          ->with('style', 'error');
+      }
 
-    if (!$fp) {
+      fwrite($fp, $command . "\n");
+      fclose($fp);
+      return true;
+
+    } catch (\Throwable $e) {
       return back()
-        ->with('message', 'Será que o VLC está aberto?.. com RC ativo?')
+        ->with('message', 'Erro inesperado: ' . $e->getMessage())
         ->with('title', 'Erro!')
         ->with('style', 'error');
     }
-
-    fwrite($fp, $command . "\n");
-    fclose($fp);
-    return true;
   }
 
   protected function openVLC()
