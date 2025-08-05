@@ -26,7 +26,7 @@ class VideoStreamController extends Controller
     public function fixOrder(GetAllVideoStreamsAction $action)
     {
         $videos = $action->handle('');
-        $i = 0;
+        $i = 1;
         foreach ($videos as $video) {
             $video->order = $i;
             $video->save();
