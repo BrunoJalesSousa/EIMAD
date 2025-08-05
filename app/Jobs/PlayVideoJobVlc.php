@@ -133,6 +133,8 @@ class PlayVideoJobVlc implements ShouldQueue
 
     $fp = @fsockopen($host, $port, $errno, $errstr, 30);
 
+    dd($fp);
+
     if (!$fp) {
       return back()
         ->with('message', 'Será que o VLC está aberto?.. com RC ativo?')
