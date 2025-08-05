@@ -100,7 +100,7 @@ class PlayVideoJobVlc implements ShouldQueue
   {
     //$this->sendCommandToVLC('clear');
     $videos = video_stream::orderBy('order', 'asc')->get();
-    
+
 	//dd($videos);
 /*
     $playlistContent = "#EXTM3U\n"; // M3U file header
@@ -140,9 +140,10 @@ class PlayVideoJobVlc implements ShouldQueue
     	fclose($fp);
       return true;
     } catch (Exception $e) {
-	// Handle the exception by displaying an error message or
-	// logging it
-        return false;
+      return back()
+        ->with( 'message', 'Será que o VLC está aberto?.. com RC ativo?' )
+        ->with( 'title', 'Erro!' )
+        ->with( 'style', 'error' );
     }
   }
 
