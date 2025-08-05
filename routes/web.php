@@ -45,6 +45,7 @@ Route::Resource('/video_stream', VideoStreamController::class)->middleware('auth
 Route::get('/media/order/{slug}/up', [VideoStreamController::class, 'orderUp'])->name('media-order-up')->middleware('auth');
 Route::get('/media/order/{slug}/down', [VideoStreamController::class, 'orderDown'])->name('media-order-down')->middleware('auth');
 Route::get('/media/sync', [VideoStreamController::class, 'syncWithFolder'])->name('media-sync')->middleware('auth');
+Route::get('/media/fix-order', [VideoStreamController::class, 'fixOrder'])->name('media-order-fix')->middleware('auth');
 
 // OMXPLAYER Routes
 Route::get('media/omxplayer/play/{slug}', [ProcessController::class, 'playVideoOmxplayer'])->name('play-video-omxplayer')->middleware('auth');

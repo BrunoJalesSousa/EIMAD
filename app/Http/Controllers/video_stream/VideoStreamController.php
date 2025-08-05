@@ -23,6 +23,22 @@ class VideoStreamController extends Controller
         return $action->handle($data);
     }
 
+    public function fixOrder(GetAllVideoStreamsAction $action)
+    {
+        $videos = $action->handle('');
+        $i = 0;
+        foreach ($videos as $video) {
+            $video->order = $i;
+            $video->save();
+            $i++;
+        }
+
+      return back()
+        ->with( 'message', 'Videos reorganizados!')
+        ->with( 'title', 'Sucesso!' )
+        ->with( 'style', 'success' );
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -39,7 +55,7 @@ class VideoStreamController extends Controller
       $validator = Validator::make($request->all(), [
         'video' => 'required|mimetypes:video/mp4,video/webm,video/ogg',
       ]);
-     
+
       if ($validator->fails()) {
         return redirect()
           ->back()
