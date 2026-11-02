@@ -14,9 +14,9 @@ class DatabaseSeeder extends Seeder
     {
 
         \App\Models\User::factory()->create([
-             'name' => 'Admin Temporário',
-             'email' => 'admin@eimad.pt',
-             'password' => 'admin',
-         ]);
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'password' => 'password',
+        ]);
     }
 }

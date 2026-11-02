@@ -17,6 +17,12 @@ public_html/hot
 
 storage/*.key
 .env
+.env.save
+*.swp
+*.save
+*.save.*
+.idea/
+composer-setup.php
 Homestead.yaml
 Homestead.json
 /.vagrant
